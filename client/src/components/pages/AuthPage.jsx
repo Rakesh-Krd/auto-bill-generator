@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Login from "../Auth/Login";
-import Signup from "../Auth/Signup";
+import Login from "../auth/Login";
+import Signup from "../auth/Signup";
 
 const AuthPage = ({ onAuthSuccess, onClose }) => {
   const [showLogin, setShowLogin] = useState(true);
