@@ -7,6 +7,7 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/auth");
 const billRoutes = require("./routes/bill");
 const emailRoutes = require("./routes/email");
+const companyRoutes=require("./routes/company");
 
 // Load environment variables
 dotenv.config();
@@ -25,6 +26,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/bill", billRoutes);
 app.use("/api/email", emailRoutes);
 app.use("/api/bills", billRoutes);
+app.use("/api/company",companyRoutes);
 
 // app.use("*", (req, res) => {
 //   res.status(404).json({ message: `Route ${req.originalUrl} not found` });

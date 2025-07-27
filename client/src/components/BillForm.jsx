@@ -1,15 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import {Trash2} from "lucide-react";
+const BillForm = ({ onBillChange ,company}) => {
+  //const [companyData, setCompanyData] = useState(null);
+  //  const company = getSafeLocalJson("company");
 
-const BillForm = ({ onBillChange }) => {
+
+
+
   const [bill, setBill] = useState({
     companyName: "",
     companyAddress: "",
     companyGST: "",
+    companyEmail:"",
     customerName: "",
     customerAddress: "",
-    customerEmail:"",
+    customerEmail: "",
     items: [{ name: "", qty: "", unit: "pcs", price: "" }],
   });
+
+useEffect(() => {
+  if (!company) return;
+
+  const updated = {
+    companyName: company.companyName || "",
+    companyAddress: company.companyAddress || "",
+    companyGST: company.companyGST || "",
+    companyEmail: company.email || "",
+    customerName: "",
+    customerAddress: "",
+    customerEmail: "",
+    items: [{ name: "", qty: "", unit: "pcs", price: "" }],
+  };
+
+  setBill(updated);
+  onBillChange(updated); // ✅ This was missing after autofill
+}, [company]);
+
+
 
   const units = ["pcs", "kg", "litre", "sqft", "box", "dozen", "meter", "gram"];
 
@@ -69,6 +96,17 @@ const BillForm = ({ onBillChange }) => {
       </div>
 
       <div className="mb-6">
+        <label className="block text-sm font-medium mb-1 text-gray-700">Company Email</label>
+        <input
+          className="input w-full"
+          type="text"
+          placeholder="Email"
+          value={bill.companyEmail}
+          onChange={(e) => handleChange("companyEmail", e.target.value)}
+        />
+      </div>
+
+      <div className="mb-6">
         <label className="block text-sm font-medium mb-1 text-gray-700">Company GST (Optional)</label>
         <input
           className="input w-full"
@@ -101,6 +139,7 @@ const BillForm = ({ onBillChange }) => {
           onChange={(e) => handleChange("customerAddress", e.target.value)}
         />
       </div>
+      
 
       <div className="mb-6">
         <label className="block text-sm font-medium mb-1 text-gray-700">Customer Email</label>
@@ -121,7 +160,7 @@ const BillForm = ({ onBillChange }) => {
           <input
             type="text"
             placeholder="Item Name"
-            className="input col-span-3"
+            className="input col-span-5"
             value={item.name}
             onChange={(e) => handleItemChange(index, "name", e.target.value)}
           />
@@ -146,22 +185,22 @@ const BillForm = ({ onBillChange }) => {
           <input
             type="number"
             placeholder="Price"
-            className="input col-span-3"
+            className="input col-span-2"
             value={item.price}
             onChange={(e) => handleItemChange(index, "price", e.target.value)}
           />
           <button
-            className="bg-red-500 text-white px-2 rounded col-span-2"
-            onClick={() => removeItem(index)}
-            type="button"
-          >
-            Remove
-          </button>
+            className="bg-red-500 text-white px-2 rounded col-span-1 flex items-center justify-center hover:bg-red-300"
+              onClick={() => removeItem(index)}
+                  type="button"
+                   >
+                 <Trash2 size={16} />
+</button>
         </div>
       ))}
 
       <button
-        className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
+        className="bg-blue-500 text-white px-4 py-2 rounded mt-2 hover:bg-blue-600"
         onClick={addItem}
         type="button"
       >
