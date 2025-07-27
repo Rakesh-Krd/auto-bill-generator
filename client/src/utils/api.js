@@ -1,12 +1,11 @@
 import axios from "axios";
 
+// Dynamically choose baseURL based on environment
 const API = axios.create({
-  baseURL: "http://localhost:5000/api", // Update if hosted elsewhere
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
 });
 
-export const saveBillToHistory = async (bill) => {
-  return await API.post("/bill/create", bill); // Make sure token is set in headers
-};
+// Set Authorization header if token exists
 API.interceptors.request.use((req) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -14,5 +13,10 @@ API.interceptors.request.use((req) => {
   }
   return req;
 });
+
+// Exported function to save a bill
+export const saveBillToHistory = async (bill) => {
+  return await API.post("/bill/create", bill);
+};
 
 export default API;
